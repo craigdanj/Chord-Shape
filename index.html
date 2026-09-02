@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ChordShape — demo</title>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fafafa;
+    color: #222;
+    margin: 0;
+    padding: 40px;
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  p.sub {
+    color: #666;
+    margin: 0 0 32px;
+    font-size: 14px;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-bottom: 40px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 6px;
+    padding: 12px;
+  }
+  .card svg {
+    display: block;
+  }
+  h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #888;
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+  code {
+    background: #f0f0f0;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12.5px;
+  }
+</style>
+</head>
+<body>
+
+<h1>ChordShape plugin — demo</h1>
+<p class="sub">Reproducing the reference diagrams, plus a couple of extra shapes to check edge cases.</p>
+
+<h2>Reference set 1 — open D</h2>
+<div class="row" id="set1"></div>
+
+<h2>Reference set 2 — Gm7 (barre) &amp; Gmaj7</h2>
+<div class="row" id="set2"></div>
+
+<h2>Extra cases — full E-shape barre, and finger numbers rendered inside the dots</h2>
+<div class="row" id="set3"></div>
+
+<script src="chord-shape.js"></script>
+<script>
+  function mount(containerId, diagram) {
+    document.getElementById(containerId).appendChild(
+      wrapCard(diagram.render())
+    );
+  }
+
+  function wrapCard(svgEl) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.appendChild(svgEl);
+    return card;
+  }
+
+  // --- Set 1: D chord, open position ---
+  // Strings low E -> high E. D is only played on the top 4 strings.
+  const dChord = new ChordShape({
+    name: 'D',
+    strings: 6,
+    fretCount: 4,
+    startFret: 1,
+    frets:   [-1, -1, 0, 2, 3, 2],
+    fingers: [null, null, null, 1, 3, 2],
+  });
+  mount('set1', dChord);
+
+  // --- Set 2: Gm7 (barre at fret 3) and Gmaj7 (starts at fret 2) ---
+  const gm7 = new ChordShape({
+    name: 'Gm7',
+    strings: 6,
+    fretCount: 4,
+    startFret: 3,
+    // All 6 strings fretted at fret 3 (the barre), plus one extra note at fret 5
+    // on the 5th string (index 1 from the low side), matching the reference image.
+    frets:   [3, 5, 3, 3, 3, 3],
+    fingers: [null, 3, null, null, null, null],
+    barres: [
+      { fret: 3, fromString: 0, toString: 5, finger: 1 },
+    ],
+  });
+  mount('set2', gm7);
+
+  const gmaj7 = new ChordShape({
+    name: 'Gmaj7',
+    strings: 6,
+    fretCount: 4,
+    startFret: 2,
+    frets:   [-1, -1, 4, 4, 3, 2],
+    fingers: [null, null, 3, 4, 2, 1],
+  });
+  mount('set2', gmaj7);
+
+  // --- Set 3: extra cases ---
+
+  // A full E-shape barre chord (F major) to confirm barres spanning all 6
+  // strings, combined with additional fretted notes off the barre, still work.
+  const fMajor = new ChordShape({
+    name: 'F',
+    strings: 6,
+    fretCount: 4,
+    startFret: 1,
+    frets:   [1, 3, 3, 2, 1, 1],
+    fingers: [1, 3, 4, 2, 1, 1],
+    barres: [
+      { fret: 1, fromString: 0, toString: 5, finger: 1 },
+    ],
+  });
+  mount('set3', fMajor);
+
+  // Same D chord, but with fingerPosition: 'inside' to demonstrate the option.
+  const dChordInside = new ChordShape({
+    name: 'D',
+    strings: 6,
+    fretCount: 4,
+    startFret: 1,
+    frets:   [-1, -1, 0, 2, 3, 2],
+    fingers: [null, null, null, 1, 3, 2],
+    fingerPosition: 'inside',
+  });
+  mount('set3', dChordInside);
+</script>
+
+</body>
+</html>
