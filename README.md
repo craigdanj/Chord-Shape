@@ -15,39 +15,43 @@ A zero-dependency vanilla JavaScript plugin that renders guitar chord diagrams a
 
 ## Demo
 
-Open `demo.html` in a browser to see it rendered — it reproduces open D, the Gm7 barre chord, Gmaj7, and a couple of extra cases (a full E-shape barre and finger numbers rendered inside the dots).
+Open `index.html` in a browser to see it rendered — it reproduces open D, the Gm7 barre chord, Gmaj7, and a couple of extra cases (a full E-shape barre and finger numbers rendered inside the dots).
 
 ## Installation
 
 No package manager required — just drop the file in and load it.
 
 **Browser:**
+
 ```html
 <script src="chord-shape.js"></script>
 <script>
-  const chord = new ChordShape({ /* ... */ });
-  document.getElementById('target').appendChild(chord.render());
+  const chord = new ChordShape({
+    /* ... */
+  });
+  document.getElementById("target").appendChild(chord.render());
 </script>
 ```
 
 **Node / bundlers (CommonJS):**
+
 ```js
-const ChordShape = require('./chord-shape.js');
+const ChordShape = require("./chord-shape.js");
 ```
 
 ## Usage
 
 ```js
 const dChord = new ChordShape({
-  name: 'D',
+  name: "D",
   strings: 6,
-  frets:   [-1, -1, 0, 2, 3, 2],       // one entry per string, low E to high E
+  frets: [-1, -1, 0, 2, 3, 2], // one entry per string, low E to high E
   fingers: [null, null, null, 1, 3, 2],
   startFret: 1,
 });
 
 // In the browser: get a live SVGElement to append to the DOM
-document.getElementById('target').appendChild(dChord.render());
+document.getElementById("target").appendChild(dChord.render());
 
 // Anywhere (including Node, no DOM needed): get the raw SVG markup string
 const svgMarkup = dChord.toSVGString();
@@ -57,32 +61,30 @@ const svgMarkup = dChord.toSVGString();
 
 ```js
 const gm7 = new ChordShape({
-  name: 'Gm7',
+  name: "Gm7",
   strings: 6,
-  startFret: 3,                                    // diagram starts at fret 3, not the nut
-  frets:   [3, 5, 3, 3, 3, 3],
+  startFret: 3, // diagram starts at fret 3, not the nut
+  frets: [3, 5, 3, 3, 3, 3],
   fingers: [null, 3, null, null, null, null],
-  barres: [
-    { fret: 3, fromString: 0, toString: 5, finger: 1 },
-  ],
+  barres: [{ fret: 3, fromString: 0, toString: 5, finger: 1 }],
 });
 ```
 
 ## Options
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `name` | `string` | `''` | Chord name printed above the diagram. |
-| `strings` | `number` | `6` | Number of strings. |
-| `fretCount` | `number` | `4` | Number of frets shown in the grid. |
-| `frets` | `number[]` | — | One entry per string, low to high. `-1` = muted (×), `0` = open (○), `N` = fretted at fret `N`. |
-| `fingers` | `(number\|null)[]` | — | Finger number (1–4) per string, or `null` to omit. |
-| `startFret` | `number` | `1` | The fret number the top of the grid represents. `1` draws a thick nut; anything higher draws a thin line with the fret number labeled to the left. |
-| `barres` | `{fret, fromString, toString, finger}[]` | `[]` | One entry per barre. `fromString`/`toString` are 0-indexed, low string first. |
-| `fingerPosition` | `'below' \| 'inside' \| 'none'` | `'below'` | Where finger numbers are drawn. |
-| `width`, `height` | `number` | `200`, `240` | SVG canvas size. |
-| `dotRadius` | `number` | `11` | Radius of fretted-note dots (and thickness of barre bars). |
-| `stringColor`, `fretColor`, `dotColor`, `dotTextColor`, `nutColor`, `textColor` | `string` (CSS color) | various greys/black | Styling overrides. |
+| Option                                                                          | Type                                     | Default             | Description                                                                                                                                        |
+| ------------------------------------------------------------------------------- | ---------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                                                                          | `string`                                 | `''`                | Chord name printed above the diagram.                                                                                                              |
+| `strings`                                                                       | `number`                                 | `6`                 | Number of strings.                                                                                                                                 |
+| `fretCount`                                                                     | `number`                                 | `4`                 | Number of frets shown in the grid.                                                                                                                 |
+| `frets`                                                                         | `number[]`                               | —                   | One entry per string, low to high. `-1` = muted (×), `0` = open (○), `N` = fretted at fret `N`.                                                    |
+| `fingers`                                                                       | `(number\|null)[]`                       | —                   | Finger number (1–4) per string, or `null` to omit.                                                                                                 |
+| `startFret`                                                                     | `number`                                 | `1`                 | The fret number the top of the grid represents. `1` draws a thick nut; anything higher draws a thin line with the fret number labeled to the left. |
+| `barres`                                                                        | `{fret, fromString, toString, finger}[]` | `[]`                | One entry per barre. `fromString`/`toString` are 0-indexed, low string first.                                                                      |
+| `fingerPosition`                                                                | `'below' \| 'inside' \| 'none'`          | `'below'`           | Where finger numbers are drawn.                                                                                                                    |
+| `width`, `height`                                                               | `number`                                 | `200`, `240`        | SVG canvas size.                                                                                                                                   |
+| `dotRadius`                                                                     | `number`                                 | `11`                | Radius of fretted-note dots (and thickness of barre bars).                                                                                         |
+| `stringColor`, `fretColor`, `dotColor`, `dotTextColor`, `nutColor`, `textColor` | `string` (CSS color)                     | various greys/black | Styling overrides.                                                                                                                                 |
 
 ## Data conventions
 
