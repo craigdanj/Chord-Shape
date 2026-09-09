@@ -88,7 +88,7 @@ const gm7 = new ChordShape({
 
 ## Data conventions
 
-`frets` and `fingers` are both indexed the same way: **index 0 is the lowest-pitched string** (low E on a standard-tuned 6-string), moving up to the highest-pitched string. This matches the format used by libraries like `chords-db`, so existing chord data generally drops in without translation.
+`frets` are indexed the following way: **index 0 is the lowest-pitched string** (low E on a standard-tuned 6-string), moving up to the highest-pitched string.
 
 ## Browser support
 
