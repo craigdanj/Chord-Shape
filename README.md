@@ -1,4 +1,4 @@
-# ChordShape
+# ChordShapeJS
 
 A zero-dependency vanilla JavaScript plugin that renders guitar chord diagrams as SVG — open chords, barre chords, and mid-neck positions, in the style of a standard chord book.
 
